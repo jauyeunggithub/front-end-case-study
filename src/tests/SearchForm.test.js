@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import SearchForm from "./components/SearchForm";
+import SearchForm from "../components/SearchForm";
 
 test("call onSearch when input values are valid", () => {
   const onSearch = jest.fn();
