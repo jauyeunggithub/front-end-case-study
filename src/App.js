@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import SearchForm from "./components/SearchForm";
 import { SEARCH_TYPE } from "./constants/searchType";
+import { searchUsers, searcOrgs } from "./helpers/http";
 
 function App() {
   const [results, setResults] = useState([]);
@@ -14,19 +15,16 @@ function App() {
       url.searchParams.set("type", type);
       window.history.pushState({}, "", url);
     }
-    let res;
+    let json;
     if (type === SEARCH_TYPE.USER) {
-      res = await fetch(`https://api.github.com/search/users?q=${keyword}`);
+      json = await searchUsers(keyword);
     } else if (type === SEARCH_TYPE.ORG) {
-      res = await fetch(
-        `https://api.github.com/search/users?q=${keyword}+type:org`
-      );
+      json = await searcOrgs(keyword);
     }
-    if (!res) {
+    if (!json) {
       setLoading(false);
       return;
     }
-    const json = await res.json();
     setResults(json.items);
     setLoading(false);
   };
