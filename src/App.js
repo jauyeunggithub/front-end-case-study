@@ -44,7 +44,14 @@ function App() {
     } else {
       if (Array.isArray(results) && results.length > 0) {
         return results?.map((r) => {
-          return <section key={r.id}>{r.login}</section>;
+          return (
+            <section key={r.id}>
+              <p>login: {r.login}</p>
+              <p>is site admin: {r.site_admin.toString()}</p>
+              <p>avatar:</p>
+              <img src={r.avatar_url} alt={r.login} />
+            </section>
+          );
         });
       } else {
         <>No Results Found</>;
