@@ -1,25 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import SearchForm from "./components/SearchForm";
 import { SEARCH_TYPE } from "./constants/searchType";
-import { searchUsers, searcOrgs } from "./helpers/http";
+import { searchUsers, searchOrgs } from "./helpers/http";
 
 function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const onSearch = async ({ keyword, type, calledFromSearchForm = false }) => {
+  const onSearch = async ({ keyword, type }) => {
     setLoading(true);
-    if (calledFromSearchForm) {
-      const url = new URL(window.location);
-      url.searchParams.set("keyword", keyword);
-      url.searchParams.set("type", type);
-      window.history.pushState({}, "", url);
-    }
     let json;
     if (type === SEARCH_TYPE.USER) {
       json = await searchUsers(keyword);
     } else if (type === SEARCH_TYPE.ORG) {
-      json = await searcOrgs(keyword);
+      json = await searchOrgs(keyword);
     }
     if (!json) {
       setLoading(false);
@@ -28,13 +22,6 @@ function App() {
     setResults(json.items);
     setLoading(false);
   };
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const keyword = params.get("keyword");
-    const type = params.get("type");
-    onSearch({ keyword, type });
-  }, []);
 
   const resultsDisplay = useMemo(() => {
     if (loading) {
@@ -52,7 +39,7 @@ function App() {
           );
         });
       } else {
-        <>No Results Found</>;
+        return <>No Results Found</>;
       }
     }
   }, [loading, results]);

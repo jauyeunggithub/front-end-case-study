@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import App from "../App";
 
-test("renders result", () => {
+test("renders no result found when there are no results", () => {
   render(<App />);
-  const result = screen.queryByText(/Results/i);
-  expect(result).toBeInTheDocument();
+  const noResults = screen.queryByText(/No Results Found/i);
+  expect(noResults).toBeInTheDocument();
 });
