@@ -13,7 +13,7 @@ const SearchForm = ({ onSearch }) => {
       return;
     }
 
-    onSearch(payload);
+    onSearch({ ...payload, calledFromSearchForm: true });
   };
 
   const onChange = (e) =>
